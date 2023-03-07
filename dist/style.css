@@ -1,8 +1,53 @@
+body {
+    font-family: 'Courier New', Courier, monospace;
+}
+
 .app {
     display: grid;
     grid-template-columns: 1fr 5fr;
 }
 
-div {
+.sidePanel, .todo {
     border: 1px solid black;
+}
+
+.todo {
+    font-size: 0.8rem;
+}
+
+.todo p {
+    display: inline-block;
+    margin: 0.5rem;
+}
+
+.todo textarea {
+    display: block;
+    min-width: 100%;
+    overflow: hidden;
+}
+
+.title {
+    font-size: 1rem;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.description {
+    color: gray;
+    line-height: 1.5;
+}
+
+.project {
+    background: #80deea;
+    border-radius: 0.375rem;
+    padding: 0 4px;
+}
+
+.todo .hidden {
+    display: none;
+}
+
+.top-line {
+    display: flex;
+    justify-content: space-between;
 }
