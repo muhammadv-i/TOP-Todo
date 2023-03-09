@@ -1,4 +1,4 @@
-import { format, formatDistance } from 'date-fns';
+import { format, formatDistance, parseISO } from 'date-fns';
 
 const sidePanel = document.querySelector('.sidePanel');
 const mainPanel = document.querySelector('.mainPanel');
@@ -59,50 +59,58 @@ function displayTodo(todo) {
     element.dataset.project = todo.getProject();
     element.dataset.priority = todo.getPriority();
 
+    let checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+
     let title = document.createElement('p');
     title.classList.add('title')
     title.innerText = todo.getTitle();
+    title.dataset.editable = 'true';
 
     let description = document.createElement('p');
     description.classList.add('description')
     description.innerText = todo.getDesc();
+    description.dataset.editable = 'true';
 
     let dueDate = document.createElement('p');
     dueDate.classList.add('dueDate')
-    dueDate.innerText = `Due on ${format(todo.getDueDate(), 'dd/MM/yyyy')}`;
+    dueDate.innerText = `Due ${format(todo.getDueDate(), 'dd/MM/yyyy')}`;
+    dueDate.dataset.editable = 'true';
 
     let priority = document.createElement('p');
     priority.classList.add('priority')
     priority.innerText = element.dataset.priority;
+    priority.dataset.editable = 'true';
 
     let notes = document.createElement('p');
     notes.classList.add('notes')
     notes.innerText = todo.getNotes();
+    notes.dataset.editable = 'true';
 
     let project = document.createElement('p');
     project.classList.add('project')
     project.innerText = element.dataset.project;
+    project.dataset.editable = 'true';
 
     let createdOn = document.createElement('p');
     createdOn.innerText = formatDistance(todo.getCreatedOn(), new Date(), { addSuffix: true });
     createdOn.classList.add('createdOn');
+    createdOn.dataset.editable = 'true';
+
     
-
-    element.append(title, description, dueDate, priority, notes, project, createdOn);
-    Array.from(element.children).forEach( child => edit(child));
-
     let g1 = document.createElement('div');
     g1.classList.add('top-line');
-
+    
     let subg1 = document.createElement('div');
-    subg1.append(title, project)
+    subg1.append(checkbox, title, project)
     let subg2 = document.createElement('div');
     subg2.append(priority, createdOn);
-
-    g1.append(subg1, subg2);
-
-    element.insertBefore(g1, element.children[0]);
     
+    g1.append(subg1, subg2);
+        
+    element.append(g1, description, dueDate, notes);
+
+    element.querySelectorAll('[data-editable = "true"]').forEach( el => edit(el));
 
     mainPanel.appendChild(element);
 }
@@ -143,6 +151,27 @@ function edit(field) {
 
 }
 
-todo('Date-fns', `The characters wrapped between two single quotes characters (') are escaped. Two single quotes in a row, whether inside or outside a quoted sequence, represent a 'real' single quote. (see the last example)`, new Date(2026, 1, 1), 'High', '214124ass asdasd');
-todo('title', 'description', new Date(), 'priority', 'notes');
-todo('title', 'description', new Date(), 'priority', 'notes');
+todo('Todo #1', `The characters wrapped between two single quotes characters (') are escaped. Two single quotes in a row, whether inside or outside a quoted sequence, represent a 'real' single quote. (see the last example)`, new Date(2026, 1, 1), 'High', 'notes');
+todo('Todo #2', 'description', new Date(), 'Medium', 'notes', 'new project');
+todo('Todo #3', 'description', new Date(), 'Low', 'notes');
+
+const adder = document.querySelector('.adder');
+adder.addEventListener("click", () => {
+    let args = {
+        title: '',
+        description: '', 
+        dueDate: '', 
+        priority: '', 
+        notes: '', 
+        project: ''
+    };
+
+    for (const [key, val] of Object.entries(args)) {
+        args[key] = prompt(`Enter ${key}: `);
+    }
+
+    args.dueDate = new Date(...args.dueDate.split('/'));
+
+    todo(...Object.values(args));
+        
+});
