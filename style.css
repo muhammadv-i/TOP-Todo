@@ -1,4 +1,4 @@
-body {
+body, input {
     font-family: 'Courier New', Courier, monospace;
 }
 
@@ -22,7 +22,7 @@ body {
 
 .todo textarea {
     display: block;
-    min-width: 100%;
+    min-width:80%;
     overflow: hidden;
 }
 
@@ -38,9 +38,11 @@ body {
 }
 
 .project {
-    background: #80deea;
-    border-radius: 0.375rem;
-    padding: 0 4px;
+    background-color:deepskyblue;
+    font-weight: bold;
+    color: white;
+    /* border-radius: 0.375rem; */
+    /* padding: 0 4px; */
 }
 
 .todo .hidden {
@@ -50,4 +52,31 @@ body {
 .top-line {
     display: flex;
     justify-content: space-between;
+}
+
+.priority {
+    color: white;
+    font-weight: bold;
+}
+
+.todo[data-priority="High"] .priority {
+    background-color: red;
+}
+
+.todo[data-priority="Medium"] .priority {
+    background-color: yellow;
+    color: black;
+}
+
+.todo[data-priority="Low"] .priority {
+    background-color: greenyellow;
+    color: black;
+}
+
+a {
+    background: black;
+    text-decoration: none;
+    color: white;
+    display: block;
+    text-align: center;
 }
